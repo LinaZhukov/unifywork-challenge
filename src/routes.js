@@ -8,6 +8,6 @@ module.exports = function(app){
     });
 
     require('./modules/art/routes')(app);
-    require('./modules/users/routes')(app);
+    require('./modules/users/userRoutes')(app);
 
 }
