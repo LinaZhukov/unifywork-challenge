@@ -1,5 +1,8 @@
+/*
+* This file starts the web server and listens on the PORT env variable
+* */
+
 const {PORT} = require('config');
-console.log({PORT})
 const logger = console;
 
 const app = require('./app')();

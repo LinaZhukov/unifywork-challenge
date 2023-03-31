@@ -1,4 +1,7 @@
-
+/*
+* This file creates the express app and mounts all routes.
+* @returns Express
+* */
 const express = require('express');
 const routes = require('./routes')
 
