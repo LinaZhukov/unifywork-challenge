@@ -3,3 +3,6 @@ GET http://localhost:3000
 
 ###
 GET http://localhost:3000/api/art
+
+###
+GET http://localhost:3000/api/users

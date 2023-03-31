@@ -5,7 +5,8 @@ module.exports = function(app){
     * */
 
     app.get('/api/users', (req, res, next) => {
-        return next();
+        res.json({users: []});
+        next();
     })
 
     app.post('/api/users', (req, res, next) => {
