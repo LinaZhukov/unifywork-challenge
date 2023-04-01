@@ -6,10 +6,12 @@
 
 const {param, validationResult} = require('express-validator');
 const artController = require('./artController');
+const commentController = require('./commentController');
+
 async function getArt(req, res){
     try{
         const result = await artController.getArt();
-        return res.json(result?.rows);
+        return res.json(result);
     }catch (e) {
         console.error(e);
         res.send(500, 'error fetching arts')
@@ -26,8 +28,15 @@ async function findArt(req, res){
             return res.status(400).json({errors: errors.array()});
         }
 
-        const result = await artController.findArt({id: artId});
-        return res.json(result?.rows);
+        const art = await artController.findArt({id: artId});
+        const comments = await commentController.getComments({artId});
+
+        const result = {
+            ...art,
+            comments
+        }
+
+        return res.json(result);
     }catch (e) {
         console.error(e);
         res.send(500, 'error fetching arts')
@@ -35,7 +44,24 @@ async function findArt(req, res){
 }
 
 async function addComment(req, res){
+    try{
+        const {artId} = req.params;
+        const {name, userId, content} = req.body;
 
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors: errors.array()});
+        }
+
+        const result = await commentController.addCommnet({
+            artId, name, content, userId
+        });
+
+        return res.json(result);
+    }catch (e) {
+        console.error(e);
+        res.send(500, 'error fetching arts')
+    }
 }
 
 
