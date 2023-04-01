@@ -1,15 +1,34 @@
+const {body, validationResult} = require('express-validator');
+const userController = require('./userController');
+
+async function createUser(req, res){
+    try{
+        const {name, age, location} = req.body;
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors: errors.array()});
+        }
+
+        const result = await userController.createUser({name, age, location});
+        return res.json(result);
+
+    }catch (e){
+        console.error(e);
+        res.send(500, 'error creating user')
+    }
+}
+
+async function getUsers(req, res){
+
+}
+
 module.exports = function(app){
-    /*
-    - /api/users - POST, create user
-    - /api/users - GET, see all users
-    * */
+    app.post('/api/users',
+        body('name').isLength({min: 1}),
+        body('age').isNumeric(),
+        body('location').isLength({min: 1}),
+        createUser
+    );
 
-    app.get('/api/users', (req, res, next) => {
-        res.json({users: []});
-        next();
-    })
-
-    app.post('/api/users', (req, res, next) => {
-        return next();
-    })
+    app.get('/api/users', getUsers);
 }
