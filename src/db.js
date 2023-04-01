@@ -5,6 +5,7 @@
 
 const { Pool } = require("pg");
 const config = require('config').get('pg');
+console.log(config)
 
 const pool = new Pool({
     user: config.PGUSER,

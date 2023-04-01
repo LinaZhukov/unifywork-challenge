@@ -1,5 +1,5 @@
 module.exports = {
-    PGUSER: process.env.PGUSER ?? 'postgres',
+    PGUSER: process.env.PGUSER || 'postgres',
     PGHOST: process.env.PGHOST ?? 'localhost',
     PGPASSWORD: process.env.PGPASSWORD ?? 'password',
     PGDATABASE: process.env.PGDATABASE ?? 'postgres',
