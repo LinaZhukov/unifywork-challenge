@@ -1,6 +1,6 @@
 /*
-* This file creates the express app and mounts all routes.
-* @returns Express
+* This file creates the express app and loads all middleware.
+* returns Express app
 * */
 
 const express = require('express');

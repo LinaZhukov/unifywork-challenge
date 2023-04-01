@@ -1,5 +1,5 @@
 /*
-* This file contains the routes for the /api/users routes
+* This file contains the routes for the users module
 * it uses express validator to ensure required params are present
 * and loads the user controller
 * */
