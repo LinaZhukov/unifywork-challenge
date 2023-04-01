@@ -1,3 +1,9 @@
+/*
+* This file contains the routes for the /api/users routes
+* it uses express validator to ensure required params are present
+* and loads the user controller
+* */
+
 const {body, validationResult} = require('express-validator');
 const userController = require('./userController');
 
@@ -22,7 +28,7 @@ async function createUser(req, res){
 async function getUsers(req, res){
     try{
         const result = await userController.getUsers();
-        return res.json(result);
+        return res.json(result?.rows);
     }catch (e) {
         console.error(e);
         res.send(500, 'error fetching users')

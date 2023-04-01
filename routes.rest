@@ -1,8 +1,15 @@
 ###
 GET http://localhost:3000
 
-###
-GET http://localhost:3000/api/art
+### Create a user
+POST http://localhost:3000/api/users
+Content-Type: application/json
 
-###
+{
+  "name": "lina",
+  "age": 38,
+  "location": "florida"
+}
+
+### Fetch all users
 GET http://localhost:3000/api/users
