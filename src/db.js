@@ -1,3 +1,8 @@
+/*
+*  This file creates a connection pool to postgres and
+*  exports a query method
+* */
+
 const { Pool } = require("pg");
 const config = require('config').get('pg');
 
