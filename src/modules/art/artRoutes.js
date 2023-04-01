@@ -21,7 +21,6 @@ async function getArt(req, res){
 async function findArt(req, res){
     try{
         const {artId} = req.params;
-        console.log(`finding ${artId}`)
 
         const errors = validationResult(req);
         if(!errors.isEmpty()){
