@@ -4,6 +4,7 @@ const userController = require('./userController');
 async function createUser(req, res){
     try{
         const {name, age, location} = req.body;
+
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(400).json({errors: errors.array()});
@@ -19,7 +20,13 @@ async function createUser(req, res){
 }
 
 async function getUsers(req, res){
-
+    try{
+        const result = await userController.getUsers();
+        return res.json(result);
+    }catch (e) {
+        console.error(e);
+        res.send(500, 'error fetching users')
+    }
 }
 
 module.exports = function(app){
