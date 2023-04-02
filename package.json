@@ -1,5 +1,5 @@
 {
-  "name": "gantri-challenge",
+  "name": "unifywork-challenge",
   "version": "1.0.0",
   "description": "Backend Project",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LinaZhukov/gantri-challenge.git"
+    "url": "git+https://github.com/LinaZhukov/unifywork-challenge.git"
   },
   "author": "zhukovl@gmail.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LinaZhukov/gantri-challenge/issues"
+    "url": "https://github.com/LinaZhukov/unifywork-challenge/issues"
   },
-  "homepage": "https://github.com/LinaZhukov/gantri-challenge#readme",
+  "homepage": "https://github.com/LinaZhukov/unifywork-challenge#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "chai": "^4.3.7",
