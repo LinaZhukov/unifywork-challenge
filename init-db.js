@@ -31,7 +31,7 @@ async function doMigration() {
     // Migrate to latest or whatever version you want
     await postgrator.migrate();
 
-    // close the db connectin
+    // close the db connection
     await client.end();
 }
 
