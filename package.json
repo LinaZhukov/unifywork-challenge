@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/LinaZhukov/unifywork-challenge#readme",
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
     "body-parser": "^1.20.2",
     "chai": "^4.3.7",
     "config": "^3.3.9",
