@@ -4,7 +4,7 @@
 * and loads the art controller
 * */
 
-const {param, validationResult} = require('express-validator');
+const {param, body, validationResult} = require('express-validator');
 const artController = require('./artController');
 const commentController = require('./commentController');
 
@@ -68,5 +68,9 @@ async function addComment(req, res){
 module.exports = function(app){
     app.get('/api/art', getArt);
     app.get('/api/art/:artId', param('artId').isNumeric(), findArt);
-    app.post('/api/art/:artId/comments', addComment);
+    app.post('/api/art/:artId/comments',
+            param('artId').isNumeric(),
+            body('content').isLength({min: 1}),
+            addComment
+    );
 }
