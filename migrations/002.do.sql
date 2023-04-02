@@ -57,8 +57,6 @@ create table public.comments
 
 alter table public.comments owner to postgres;
 
-
-
 COPY art
     FROM '/app/docs/the-tate-collection.csv'
     DELIMITER ';'
