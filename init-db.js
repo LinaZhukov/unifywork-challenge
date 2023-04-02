@@ -1,3 +1,9 @@
+/*
+* This file uses postgrator to manage the creation
+* and seeding of the database. It should be run
+* once before the api is tested.
+* */
+
 const pg = require('pg');
 const Postgrator = require('postgrator');
 const {pg: config} = require('config');
@@ -11,8 +17,6 @@ async function doMigration() {
         port: config.PGPORT
     });
 
-    console.log('connecting')
-    console.log('migration pattern', __dirname + '/migrations/*')
     await client.connect();
 
     const postgrator = new Postgrator({
@@ -22,7 +26,6 @@ async function doMigration() {
         execQuery: (query) => client.query(query),
     });
 
-    //postgrator.on("validation-started", (m) => console.log(m))
     postgrator.on("migration-started", (m) => console.log(m))
 
     // Migrate to latest or whatever version you want
@@ -33,5 +36,3 @@ async function doMigration() {
 }
 
 doMigration().catch((e) => console.error(e));
-
-module.exports.generateSql = doMigration;
