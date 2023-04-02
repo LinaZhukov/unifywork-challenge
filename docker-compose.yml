@@ -6,11 +6,11 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://user:pass@postgres:5432/db
+      DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
       PORT: 3000
     ports:
       - "3000:3000"
-    command: node src/server.js
+    command: npm run start
     volumes:
       - .:/app/
       - /app/node_modules
@@ -20,6 +20,6 @@ services:
     ports:
       - "35432:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
