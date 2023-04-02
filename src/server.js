@@ -5,7 +5,7 @@
 const {PORT, HOST} = require('config');
 const logger = console;
 
-const app = require('./app')();
+const app = require('./app');
 
 const server = app.listen(PORT, HOST, function() {
     logger.info(`Express server listening on https://${HOST}:${server.address().port}`);
