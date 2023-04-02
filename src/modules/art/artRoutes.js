@@ -8,6 +8,9 @@ const {param, body, validationResult} = require('express-validator');
 const artController = require('./artController');
 const commentController = require('./commentController');
 
+/*
+* Middleware to run any validators registered
+* */
 function validate(req, res, next){
     const errors = validationResult(req);
     if(!errors.isEmpty()){

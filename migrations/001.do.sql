@@ -62,10 +62,8 @@ alter table public.comments
 
 
 
-
-
 COPY art
-    FROM 'docs/the-tate-collection.csv'
+    FROM 'D:\dev\gantri-challenge\docs\the-tate-collection.csv'
     DELIMITER ';'
     CSV HEADER;
 
