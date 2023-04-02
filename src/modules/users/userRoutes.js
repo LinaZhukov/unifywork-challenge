@@ -21,7 +21,7 @@ async function createUser(req, res){
 
     }catch (e){
         console.error(e);
-        res.send(500, 'error creating user')
+        res.status(500).send(e)
     }
 }
 

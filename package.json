@@ -4,6 +4,7 @@
   "description": "Backend Project",
   "scripts": {
     "start": "node src/server.js",
+    "migrate": "node init-db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,7 +25,7 @@
     "express-validator": "^6.15.0",
     "mocha": "^10.2.0",
     "pg": "^8.10.0",
-    "postgrator": "^7.1.1",
+    "postgrator": "5.0.1",
     "supertest": "^6.3.3"
   }
 }

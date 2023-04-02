@@ -28,8 +28,7 @@ create table public.art
     url                  text
 );
 
-alter table public.art
-    owner to postgres;
+alter table public.art owner to postgres;
 
 create table public.users
 (
@@ -41,8 +40,7 @@ create table public.users
             primary key
 );
 
-alter table public.users
-    owner to postgres;
+alter table public.users owner to postgres;
 
 create table public.comments
 (
@@ -57,13 +55,12 @@ create table public.comments
             references public.art
 );
 
-alter table public.comments
-    owner to postgres;
+alter table public.comments owner to postgres;
 
 
 
 COPY art
-    FROM 'D:\dev\gantri-challenge\docs\the-tate-collection.csv'
+    FROM '/app/docs/the-tate-collection.csv'
     DELIMITER ';'
     CSV HEADER;
 

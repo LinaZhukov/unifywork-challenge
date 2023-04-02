@@ -8,5 +8,5 @@ const logger = console;
 const app = require('./app')();
 
 const server = app.listen(PORT, HOST, function() {
-    logger.info(`Express server listening on https://${server.address().address}:${server.address().port}`);
+    logger.info(`Express server listening on https://${HOST}:${server.address().port}`);
 });
