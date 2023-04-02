@@ -1,12 +1,21 @@
 /*
 * This file contains the routes for the art module
 * it uses express validator to ensure required params are present
-* and loads the art controller
+* and loads the art and comment controllers
 * */
 
 const {param, body, validationResult} = require('express-validator');
 const artController = require('./artController');
 const commentController = require('./commentController');
+
+function validate(req, res, next){
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }else{
+        next();
+    }
+}
 
 async function getArt(req, res){
     try{
@@ -21,11 +30,6 @@ async function getArt(req, res){
 async function findArt(req, res){
     try{
         const {artId} = req.params;
-
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors: errors.array()});
-        }
 
         const art = await artController.findArt({id: artId});
         const comments = await commentController.getComments({artId});
@@ -47,11 +51,6 @@ async function addComment(req, res){
         const {artId} = req.params;
         const {name, userId, content} = req.body;
 
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors: errors.array()});
-        }
-
         const result = await commentController.addCommnet({
             artId, name, content, userId
         });
@@ -67,10 +66,17 @@ async function addComment(req, res){
 
 module.exports = function(app){
     app.get('/api/art', getArt);
-    app.get('/api/art/:artId', param('artId').isNumeric(), findArt);
+
+    app.get('/api/art/:artId',
+            param('artId').isNumeric(),
+            validate,
+            findArt
+    );
+
     app.post('/api/art/:artId/comments',
             param('artId').isNumeric(),
             body('content').isLength({min: 1}),
+            validate,
             addComment
     );
 }
