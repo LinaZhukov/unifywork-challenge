@@ -9,6 +9,7 @@ services:
       PORT: 3000
       PGHOST: postgres
       PGUSER: postgres
+      REDIS_URL: redis://redis:6379
     ports:
       - "3000:3000"
     command: npm run start
@@ -28,6 +29,10 @@ services:
       - ./docs:/app/docs
 
   redis:
-    image: redis:latest
+    image: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
+    restart: always
+    entrypoint: redis-server
