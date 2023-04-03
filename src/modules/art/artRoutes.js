@@ -4,7 +4,7 @@
 * and loads the art and comment controllers
 * */
 
-const {param, body, validationResult} = require('express-validator');
+const {param, body, query, validationResult} = require('express-validator');
 const artController = require('./artController');
 const commentController = require('./commentController');
 
@@ -20,7 +20,7 @@ function validate(req, res, next){
     }
 }
 
-async function getArt(req, res){
+async function getArtHandler(req, res){
     try{
         const result = await artController.getArt();
         return res.json(result);
@@ -30,7 +30,7 @@ async function getArt(req, res){
     }
 }
 
-async function findArt(req, res){
+async function findArtHandler(req, res){
     try{
         const {artId} = req.params;
 
@@ -49,7 +49,7 @@ async function findArt(req, res){
     }
 }
 
-async function addComment(req, res){
+async function addCommentHandler(req, res){
     try{
         const {artId} = req.params;
         const {name, userId, content} = req.body;
@@ -65,21 +65,38 @@ async function addComment(req, res){
     }
 }
 
+async function searchArtHandler(req, res){
+    try{
+        const {search} = req.query;
+        const result = await artController.searchArt({search});
+        res.json(result);
+    }catch (e){
+        console.error(e);
+        res.status(500).send(e);
+    }
+}
+
 
 
 module.exports = function(app){
-    app.get('/api/art', getArt);
+    app.get('/api/art', getArtHandler);
+
+    app.get('/api/art/search',
+            query('search').isLength({min: 1}),
+            validate,
+            searchArtHandler
+    );
 
     app.get('/api/art/:artId',
             param('artId').isNumeric(),
             validate,
-            findArt
+            findArtHandler
     );
 
     app.post('/api/art/:artId/comments',
             param('artId').isNumeric(),
             body('content').isLength({min: 1}),
             validate,
-            addComment
+            addCommentHandler
     );
 }
