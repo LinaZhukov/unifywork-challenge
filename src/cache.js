@@ -10,7 +10,7 @@ const {redis: config} = require('config');
 let client;
 
 (async () => {
-    client = await redis.createClient({
+    client = redis.createClient({
         url: config.REDIS_URL
     });
 
