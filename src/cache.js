@@ -10,7 +10,7 @@ const {redis: config} = require('config');
 let client;
 
 (async () => {
-    client = redis.createClient({
+    client = await redis.createClient({
         url: config.REDIS_URL
     });
 
@@ -20,11 +20,21 @@ let client;
 
     client.on('ready', () => {
         console.log(`redis is ready`);
+    });
+
+    client.on('connected', () => {
+        console.log(`redis is connected`);
     })
+
+    await client.connect();
 })();
 
 async function find({key, prefix}){
-    return await client.get(`${prefix}:${key}`)
+    try{
+        return await client.get(`${prefix}:${key}`);
+    }catch (e){
+        console.error(e);
+    }
 }
 
 async function save({key, prefix, value}){
@@ -33,7 +43,6 @@ async function save({key, prefix, value}){
     }catch (e){
         console.error(e);
     }
-
 }
 
 

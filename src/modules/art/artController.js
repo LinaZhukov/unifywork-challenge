@@ -13,18 +13,25 @@ async function findArt({id}){
 }
 
 async function searchArt({search}){
+    let result;
     const cache = await artModel();
-    const cached = await cache.search()
-        .where('title').equals(search).return.all();
+    try {
+        console.log('checking cache')
+        const cached = await cache.search()
+            .where('title').equals(search).return.all();
 
-    const result = cached.map(i => i.toJSON());
-    if(result.length){
-        console.log('cache found ', result);
-        return result;
+        result = cached.map(i => i.toJSON());
+        if(result.length){
+            console.log('cache found ', result);
+            return result;
+        }
+    }catch (e){
+        console.error('error reading cache ', e);
     }
 
-    if(!cached?.length){
-        const result = (await db.query(
+
+    if(!result?.length){
+        result = (await db.query(
             `select id, title, artist, year from art where title like $1`,
             [search]
         ))?.rows;
