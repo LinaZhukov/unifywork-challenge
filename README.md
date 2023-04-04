@@ -1,10 +1,16 @@
+## Overview
+This project creates a node.js app that exposes a rest api to manage the tate art collection.
+It provides endpoints to create uses, search art, and lets users leave comments on the art.
+
+The art modules search features are built on the full text search capability 
+provided by rediSearch (by way of redis-om).
 
 ### to start app
 1) run `docker-compose.yaml` with docker from the root directory of the project
 ```bash
     docker-compose up
 ```
-2) inside node container run `npm run migrate`
+2) inside node container run `npm run migrate` to create the database and seed the data.
 3) api can be accessed from node container as follows:
 - create a user
 ```bash
