@@ -1,16 +1,16 @@
 /*
 * This is the wrapper for redis. It exposes two methods
-* find and save that can be used to retrieve and save keys
+* find and save that can be used to retrieve and save keys.
+* It uses the redis module rediSearch.
 * */
 
 const redis = require("redis");
 const {redis: config} = require('config');
-const {SchemaFieldTypes} = require("redis");
+const {SchemaFieldTypes} = redis;
 
 let client;
 
 (async () => {
-    console.log('creating redis client')
     client = redis.createClient({
         url: config.REDIS_URL
     });
@@ -20,60 +20,54 @@ let client;
     })
 
     client.on('ready', () => {
-        console.log(`Redis is ready`);
+        console.log(`redis is ready`);
     })
-
-    client.on('connect', () => {
-        console.log(`redis connected`);
-    })
-
-    await client.connect();
-
-    console.log(await client.info())
 
     const buildIndex = async () => await client.ft.create(
-        'idx:art:search', {
-            '$.id': {
+        'idx:artSearch', {
+            id: {
                 type: SchemaFieldTypes.NUMERIC,
-                AS: 'id'
+                sortable: true
             },
-            '$.title': {
-                type: SchemaFieldTypes.TEXT,
-                AS: 'title'
-            },
-            '$.artist': {
-                type: SchemaFieldTypes.TEXT,
-                AS: 'artist'
-            },
-            '$.year': {
-                type: SchemaFieldTypes.NUMERIC,
-                AS: 'year'
-            },
+            title: SchemaFieldTypes.TEXT,
+            artist: SchemaFieldTypes.TEXT,
+            year: SchemaFieldTypes.NUMERIC,
+
         }, {
-            ON: 'JSON',
+            ON: 'HASH',
             PREFIX: 'art:search'
         }
     );
 
-    await buildIndex();
+    await client.connect();
 
+    try{
+        await buildIndex();
+    }catch (e){
+        console.log('index exists, skipping creation')
+    }
 
 })();
 
 async function find({search}){
-    console.log('finding search term ', search);
-    const key = `art:search:${search}`;
-    const result = await client.get(key);
-    const searchResult = await client.ft.search('idx:art:search', `@title:{${search}`);
-    console.log({result});
-    console.log({searchResult});
-    return result ? JSON.parse(result) : result;
+    const lookup = `@title:{${search}}`;
+    const searchResult = await client.ft.search('idx:artSearch', lookup);
+    return searchResult?.total ? JSON.parse(searchResult.documents) : undefined;
 }
 
-function save({search, result}){
-    const key = `art:search:${search}`;
-    console.log('saving ', {key, result});
-    client.set(key, JSON.stringify(result));
+async function save({result}){
+
+    try{
+        for(const i of result){
+            const key = `art:search:${i.id}`;
+            await client.set(key, JSON.stringify(i))
+        }
+    }catch (e){
+        console.error('cant save');
+        console.error(e)
+    }
+
 }
 
-module.exports = {find, save}
+
+module.exports = {find, save, client}

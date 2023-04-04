@@ -19,7 +19,7 @@ curl http://localhost:3000/api/users
 ```
 - search all art
 ```bash
-curl http://localhost:3000/api/art/search?search=Interior
+curl http://localhost:3000/api/art/search?search=Dog
 ```
 
 - get info on art by its id
