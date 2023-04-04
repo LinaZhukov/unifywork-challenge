@@ -1,3 +1,7 @@
+/*
+* This is the AWS lambda function wrapper, it imports our express app.
+* */
+
 'use strict'
 const awsServerlessExpress = require('aws-serverless-express')
 const app = require('./src/app')

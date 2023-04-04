@@ -1,12 +1,11 @@
 /*
 * This is the wrapper for redis. It exposes two methods
 * find and save that can be used to retrieve and save keys.
-* It uses the redis module rediSearch.
+* As well as the redis connection.
 * */
 
 const redis = require("redis");
 const {redis: config} = require('config');
-const {SchemaFieldTypes} = redis;
 
 let client;
 
@@ -22,49 +21,17 @@ let client;
     client.on('ready', () => {
         console.log(`redis is ready`);
     })
-
-    const buildIndex = async () => await client.ft.create(
-        'idx:artSearch', {
-            id: {
-                type: SchemaFieldTypes.NUMERIC,
-                sortable: true
-            },
-            title: SchemaFieldTypes.TEXT,
-            artist: SchemaFieldTypes.TEXT,
-            year: SchemaFieldTypes.NUMERIC,
-
-        }, {
-            ON: 'HASH',
-            PREFIX: 'art:search'
-        }
-    );
-
-    await client.connect();
-
-    try{
-        await buildIndex();
-    }catch (e){
-        console.log('index exists, skipping creation')
-    }
-
 })();
 
-async function find({search}){
-    const lookup = `@title:{${search}}`;
-    const searchResult = await client.ft.search('idx:artSearch', lookup);
-    return searchResult?.total ? JSON.parse(searchResult.documents) : undefined;
+async function find({key, prefix}){
+    return await client.get(`${prefix}:${key}`)
 }
 
-async function save({result}){
-
+async function save({key, prefix, value}){
     try{
-        for(const i of result){
-            const key = `art:search:${i.id}`;
-            await client.set(key, JSON.stringify(i))
-        }
+        await client.set(`${prefix}:${key}`, JSON.stringify(value));
     }catch (e){
-        console.error('cant save');
-        console.error(e)
+        console.error(e);
     }
 
 }

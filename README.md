@@ -23,7 +23,7 @@ curl -d '{"name": "tomathin", "age": 27, "location": "florida"}' \
 ```bash
 curl http://localhost:3000/api/users
 ```
-- search all art
+- search all art by title. This endpoint will do a full text search backed by rediSearch before checking the postgres db.
 ```bash
 curl http://localhost:3000/api/art/search?search=Dog
 ```
